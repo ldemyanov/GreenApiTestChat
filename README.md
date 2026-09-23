@@ -13,4 +13,18 @@
 | [spec/04-green-api-contract.md](spec/04-green-api-contract.md) | Методы API |
 | [spec/05-ui.md](spec/05-ui.md) | Экраны и токены |
 
-Приложение пока не собрано. Когда появится каркас: `npm install`, `npm run dev`.
+Технический каркас приложения собран на Vite, React и TypeScript. Бизнес-функциональность пока не реализована.
+
+## Команды
+
+```bash
+npm install
+npm run dev
+```
+
+- `npm run build` — проверить типы и собрать production-версию;
+- `npm run typecheck` — проверить типы;
+- `npm run lint` — проверить код ESLint;
+- `npm run format` — отформатировать код Prettier;
+- `npm run format:check` — проверить форматирование;
+- `npm run test` — запустить Vitest в watch-режиме.
