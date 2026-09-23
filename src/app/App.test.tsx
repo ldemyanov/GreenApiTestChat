@@ -45,7 +45,7 @@ describe('Подключение', () => {
         fillCredentials();
         await user.click(screen.getByLabelText('apiTokenInstance'));
         await user.keyboard('{Enter}');
-        expect(await screen.findByText('Подключение выполнено')).toBeVisible();
+        expect(await screen.findByRole('heading', { name: 'Чаты' })).toBeVisible();
         expect(fetchMock).toHaveBeenCalledWith(
             'https://9999.api.green-api.com/waInstance9999000000/getStateInstance/Fake-Token',
             expect.objectContaining({ signal: expect.any(AbortSignal) }),
@@ -70,7 +70,7 @@ describe('Подключение', () => {
         expect(await screen.findByRole('alert')).toHaveTextContent(message);
         expect(screen.getByLabelText('apiTokenInstance')).toHaveValue(' Fake-Token ');
         expect(screen.getByRole('button', { name: 'Подключиться' })).toBeEnabled();
-        expect(screen.queryByText('Подключение выполнено')).not.toBeInTheDocument();
+        expect(screen.queryByRole('heading', { name: 'Чаты' })).not.toBeInTheDocument();
     });
 
     it('скрывает детали сетевой ошибки и позволяет повторить запрос', async () => {
@@ -82,7 +82,7 @@ describe('Подключение', () => {
         expect(await screen.findByRole('alert')).toHaveTextContent('Не удалось связаться');
         expect(screen.getByRole('alert')).not.toHaveTextContent('Fake-Token');
         submit();
-        expect(await screen.findByText('Подключение выполнено')).toBeVisible();
+        expect(await screen.findByRole('heading', { name: 'Чаты' })).toBeVisible();
     });
 
     it('отменяет запрос через 15 секунд и блокирует повторную отправку', async () => {

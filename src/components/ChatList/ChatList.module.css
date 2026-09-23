@@ -1,0 +1,43 @@
+.list {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-s);
+    overflow-y: auto;
+}
+.list button {
+    display: grid;
+    gap: var(--space-s);
+    width: 100%;
+    min-height: 64px;
+    padding: var(--space-m);
+    border: 1px solid transparent;
+    border-radius: var(--radius-s);
+    color: var(--color-text);
+    background: transparent;
+    text-align: left;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+.list button:hover {
+    background: var(--color-surface);
+}
+.list button[aria-pressed='true'] {
+    background: var(--color-surface);
+    border-color: var(--color-accent);
+}
+.list small,
+.empty {
+    color: var(--color-text-muted);
+}
+.empty {
+    padding: var(--space-l);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.list small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}

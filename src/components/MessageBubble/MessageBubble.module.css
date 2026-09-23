@@ -1,0 +1,25 @@
+.bubble {
+    align-self: flex-end;
+    max-width: min(80%, 640px);
+    padding: var(--space-m);
+    background: var(--color-bubble-out);
+    border-radius: var(--radius-m);
+    overflow-wrap: anywhere;
+}
+.text {
+    margin: 0 0 var(--space-s);
+    white-space: pre-wrap;
+}
+.bubble time,
+.status,
+.error {
+    font-size: 12px;
+    line-height: 1.5;
+}
+.status,
+.error {
+    display: block;
+}
+.error {
+    color: var(--color-danger);
+}

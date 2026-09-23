@@ -1,0 +1,19 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    margin: 0;
+    padding: var(--space-l);
+    list-style: none;
+}
+.empty {
+    display: grid;
+    flex: 1;
+    place-content: center;
+    padding: var(--space-l);
+    margin: 0;
+    color: var(--color-text-muted);
+}
