@@ -1,0 +1,81 @@
+.card {
+    width: 100%;
+    max-width: 400px;
+    padding: calc(var(--space-l) * 2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-m);
+    background: var(--color-sidebar);
+}
+
+.brand,
+.description,
+.note {
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+.brand {
+    margin: 0 0 var(--space-l);
+    font-size: 13px;
+}
+.card h1 {
+    margin: 0;
+    font-size: 28px;
+}
+.description {
+    margin: var(--space-s) 0 calc(var(--space-l) * 2);
+}
+.field {
+    display: grid;
+    gap: var(--space-s);
+    margin-bottom: var(--space-l);
+}
+.field label {
+    font-size: 14px;
+}
+.field input {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: var(--space-m);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-s);
+    background: var(--color-surface);
+    color: var(--color-text);
+}
+.field input[aria-invalid='true'] {
+    border-color: var(--color-danger);
+}
+.submit {
+    width: 100%;
+    min-height: 44px;
+    border: 0;
+    border-radius: var(--radius-s);
+    padding: var(--space-m);
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 600;
+    cursor: pointer;
+}
+.submit:hover:not(:disabled) {
+    background: var(--color-accent-hover);
+}
+.submit:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+.error {
+    color: var(--color-danger);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: var(--space-s) 0;
+}
+.note {
+    font-size: 12px;
+    margin: var(--space-l) 0 0;
+}
+@media (max-width: 420px) {
+    .card {
+        padding: var(--space-l);
+    }
+}

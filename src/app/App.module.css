@@ -1,11 +1,25 @@
 .page {
     display: grid;
     min-height: 100vh;
-    place-content: center;
+    min-height: 100dvh;
+    place-items: center;
     padding: var(--space-l);
-    text-align: center;
 }
 
-.page p {
+.connected p {
     color: var(--color-text-muted);
+}
+
+.connected {
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+.connected button {
+    min-height: 44px;
+    padding: var(--space-m) var(--space-l);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-s);
+    color: var(--color-text);
+    background: var(--color-surface);
+    cursor: pointer;
 }
