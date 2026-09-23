@@ -1,0 +1,20 @@
+---
+description: Источник истины, границы версии и обязательное чтение spec
+alwaysApply: true
+---
+
+# Проект
+
+Источник истины — `spec/`. Перед фичами читай `spec/0-tech-spec.md`, `spec/01-code-style.md`, `spec/03-business-logic.md`. Контракт запросов — `spec/04-green-api-contract.md`. Внешний вид — `spec/05-ui.md`. Процесс — `spec/02-agent-rules.md`.
+
+Не копируй эти файлы в ответ целиком. Следуй им. Если пользователь меняет договорённости — обнови spec.
+
+## Не делать
+
+- группы, вложения, цитирование, правки/удаление сообщений, прочтение, контакты, история Telegram
+- persist сессии (`localStorage`, `sessionStorage`, IndexedDB)
+- react-router, axios, tanstack-query, UI-kit, CSS-in-JS
+- webhook, `SetSettings`, смена настроек инстанса
+- методы и `chatId` формата WhatsApp (`798…@c.us`) для новой отправки
+- зависимости, экраны и фичи «на будущее»
+- коммит и push без явной просьбы пользователя

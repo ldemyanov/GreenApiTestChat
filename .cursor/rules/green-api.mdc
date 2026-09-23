@@ -1,0 +1,20 @@
+---
+description: Контракт GREEN-API Telegram и очередь уведомлений
+globs: "src/api/**"
+alwaysApply: false
+---
+
+# GREEN-API
+
+Только документация Telegram: `spec/04-green-api-contract.md`. Не копировать WhatsApp.
+
+- Хост текущей версии выводится как `https://{первые 4 цифры idInstance}.api.green-api.com`.
+  Это допущение требуется сверить с `apiUrl` тестового инстанса до полной реализации.
+- Путь: `/waInstance{idInstance}/{method}/{apiTokenInstance}`.
+- Методы версии: `getStateInstance`, `checkAccount`, `sendMessage`, `receiveNotification`, `deleteNotification`.
+- Цикл: Receive → обработка → Delete → следующий. Пустое тело — нет события, цикл продолжается.
+- В переписку добавлять только `incomingMessageReceived` с `senderData.chatType === "user"` и поддерживаемым текстовым типом.
+- Таймаут обычных методов — 15 секунд; `ReceiveNotification` — `receiveTimeout=20` и клиентская отмена через 30 секунд.
+- `phoneNumber` в `checkAccount` — number только на границе API. `force` не передавать.
+- `SendMessage` только с `chatId` из `CheckAccount` или уведомления, поля `chatId` + `message`.
+- HTTP 200 ≠ успех: смотреть поля метода (`exist`, `idMessage`, `status: false`).
