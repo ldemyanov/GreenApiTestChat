@@ -73,3 +73,21 @@
         min-height: 360px;
     }
 }
+
+.notice {
+    padding: var(--space-m) var(--space-l);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-danger);
+}
+.notice p {
+    margin: 0 0 var(--space-s);
+}
+.notice button {
+    padding: var(--space-s);
+    min-height: 44px;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-s);
+    cursor: pointer;
+}

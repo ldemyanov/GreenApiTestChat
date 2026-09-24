@@ -1,7 +1,8 @@
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { checkAccount } from '../api/greenApi';
 import { ApiError } from '../api/client';
 import { chatReducer, initialChatState } from '../model/chatReducer';
+import { useNotificationLoop } from './useNotificationLoop';
 import { useSendMessage } from './useSendMessage';
 import type { Session } from '../model/session';
 
@@ -12,11 +13,12 @@ export function useChats(session: Session) {
     const [blocked, setBlocked] = useState(false);
     const request = useRef<AbortController | null>(null);
 
-    function blockSession() {
+    const blockSession = useCallback(() => {
         setBlocked(true);
         setError('Проверьте учётные данные. Нажмите «Выйти» и подключитесь заново.');
-    }
+    }, []);
 
+    const receiving = useNotificationLoop(session, dispatch, blocked, blockSession, state.chats);
     const send = useSendMessage(session, dispatch, blocked, blockSession);
 
     useEffect(
@@ -67,6 +69,7 @@ export function useChats(session: Session) {
 
     return {
         ...state,
+        receiving,
         pending,
         error,
         blocked,

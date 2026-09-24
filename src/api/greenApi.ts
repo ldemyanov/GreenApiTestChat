@@ -83,3 +83,29 @@ export async function sendMessage(
     }
     return data.idMessage;
 }
+
+export async function receiveNotification(credentials: Credentials, signal: AbortSignal): Promise<unknown> {
+    const { idInstance, apiTokenInstance } = credentials;
+    return requestJson(
+        `https://${idInstance.slice(0, 4)}.api.green-api.com/waInstance${idInstance}/receiveNotification/${encodeURIComponent(apiTokenInstance)}?receiveTimeout=5`,
+        signal,
+        {},
+        { timeoutMs: 30000, allowEmpty: true },
+    );
+}
+
+export async function deleteNotification(
+    credentials: Credentials,
+    receiptId: number,
+    signal: AbortSignal,
+): Promise<boolean> {
+    const { idInstance, apiTokenInstance } = credentials;
+    const data = await requestJson(
+        `https://${idInstance.slice(0, 4)}.api.green-api.com/waInstance${idInstance}/deleteNotification/${encodeURIComponent(apiTokenInstance)}/${receiptId}`,
+        signal,
+        { method: 'DELETE' },
+    );
+    if (!isRecord(data) || typeof data.result !== 'boolean')
+        throw new ApiError('format', 'Не удалось распознать подтверждение уведомления.');
+    return data.result;
+}

@@ -3,6 +3,7 @@ import type { Message, SendResult } from './message';
 export interface Chat {
     chatId: string;
     phoneNumbers: string[];
+    name?: string;
     createdAt: number;
     messages: Message[];
     draft: string;
@@ -18,12 +19,28 @@ export const initialChatState: ChatState = { chats: [], activeChatId: null };
 
 export type ChatAction =
     | { type: 'open'; chatId: string; phone: string; createdAt: number }
+    | { type: 'incoming'; message: Message; name?: string }
     | { type: 'select'; chatId: string }
     | { type: 'draft'; chatId: string; text: string }
     | { type: 'sending'; chatId: string; message: Message }
     | { type: 'sendResult'; chatId: string; localId: string; draftRevision: number; result: SendResult };
 
 export function chatReducer(state: ChatState, action: ChatAction): ChatState {
+    if (action.type === 'incoming') {
+        const message = action.message;
+        const existing = state.chats.find((chat) => chat.chatId === message.chatId);
+        if (!existing || existing.messages.some((item) => item.idMessage === message.idMessage)) return state;
+        const chat = existing;
+        const updated = {
+            ...chat,
+            name: chat.name || action.name,
+            messages: [...chat.messages, message].sort((a, b) => a.timestamp - b.timestamp),
+        };
+        return {
+            ...state,
+            chats: state.chats.map((item) => (item.chatId === chat.chatId ? updated : item)),
+        };
+    }
     if (action.type === 'select') {
         return state.chats.some((chat) => chat.chatId === action.chatId)
             ? { ...state, activeChatId: action.chatId }
@@ -79,4 +96,8 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
               },
           ];
     return { chats, activeChatId: action.chatId };
+}
+
+export function chatTitle(chat: Chat): string {
+    return chat.name || (chat.phoneNumbers[0] ? `+${chat.phoneNumbers[0]}` : chat.chatId);
 }

@@ -23,3 +23,8 @@
 .error {
     color: var(--color-danger);
 }
+
+.incoming {
+    align-self: flex-start;
+    background: var(--color-bubble-in);
+}

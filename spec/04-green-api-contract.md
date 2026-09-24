@@ -35,7 +35,7 @@ https://{idInstance.slice(0, 4)}.api.green-api.com
 Общий клиент: `fetch`, JSON, различать HTTP-ошибку, сеть и `AbortError`.
 
 - `GetStateInstance`, `CheckAccount`, `SendMessage` и `DeleteNotification`: отмена клиентом через 15 секунд.
-- `ReceiveNotification`: `receiveTimeout=20`, отмена клиентом через 30 секунд, чтобы сервер успел вернуть ответ.
+- `ReceiveNotification`: `receiveTimeout=5`, отмена клиентом через 30 секунд, чтобы сервер успел вернуть ответ.
 - Таймаут `SendMessage` означает неопределённый результат `unknown`, потому что API мог принять запрос.
 - Пользовательский выход и замена сессии отменяют запросы без показа ошибки.
 
@@ -74,8 +74,13 @@ https://{idInstance.slice(0, 4)}.api.green-api.com
 
 ## ReceiveNotification
 
-- `GET …/receiveNotification/{token}?receiveTimeout=20`
-- `receiveTimeout` в диапазоне 5–60, в проекте фиксируем `20`.
+После наблюдавшихся HTTP 408 используем минимальное документированное ожидание 5 секунд вместо 20.
+Это мера для проверки совместимости с таймаутами сервера или промежуточного соединения;
+устранение 408 требует ручного подтверждения пользователем. Клиентский таймаут остаётся 30 секунд.
+
+
+- `GET …/receiveNotification/{token}?receiveTimeout=5`
+- `receiveTimeout` в диапазоне 5–60, в проекте фиксируем `5`.
 - Нет события: пустое тело (после trim нет JSON) — это не ошибка, запрашиваем снова.
 - Есть событие:
 
@@ -91,7 +96,10 @@ https://{idInstance.slice(0, 4)}.api.green-api.com
 
 Текст входящего:
 
-- сначала проверяем `typeWebhook === "incomingMessageReceived"` и `senderData.chatType === "user"`;
+- проверяем `typeWebhook === "incomingMessageReceived"` и наличие `senderData.chatId`;
+- если чат не создан пользователем по номеру в текущей сессии, подтверждаем уведомление без добавления в переписку
+  и без проверки содержимого сообщения (в том числе при `chatType: "bot"`);
+- для созданного чата обрабатываем текст при `senderData.chatType === "user"`; группы и ботов пропускаем;
 - `messageData.typeMessage === "textMessage"` → `messageData.textMessageData.textMessage`;
 - `messageData.typeMessage === "extendedTextMessage"` → `messageData.extendedTextMessageData.text`
   (превью ссылки не строим).

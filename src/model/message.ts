@@ -9,7 +9,8 @@ export interface Message {
     idMessage?: string;
     text: string;
     timestamp: number;
-    status: SendStatus;
+    status?: SendStatus;
+    direction?: 'incoming' | 'outgoing';
 }
 
 export function validateMessage(text: string): string {

@@ -1,3 +1,4 @@
+import { chatTitle } from '../../model/chatReducer';
 import type { Session } from '../../model/session';
 import { useChats } from '../../hooks/useChats';
 import { ChatList } from '../ChatList/ChatList';
@@ -7,9 +8,21 @@ import { MessageComposer } from '../MessageComposer/MessageComposer';
 import styles from './ChatLayout.module.css';
 
 export function ChatLayout({ session, onExit }: { session: Session; onExit: () => void }) {
-    const { chats, activeChatId, pending, blocked, error, createChat, selectChat, updateDraft, sendToChat } =
-        useChats(session);
+    const { 
+        chats,
+        activeChatId,
+        receiving,
+        pending,
+        blocked,
+        error,
+        createChat,
+        selectChat,
+        updateDraft,
+        sendToChat
+    } = useChats(session);
+
     const activeChat = chats.find((chat) => chat.chatId === activeChatId);
+    
     return (
         <main className={styles.layout}>
             <aside className={styles.sidebar} aria-label="Чаты">
@@ -19,11 +32,27 @@ export function ChatLayout({ session, onExit }: { session: Session; onExit: () =
             </aside>
             <section className={styles.conversation} aria-label="Переписка">
                 <header className={styles.header}>
-                    <h2>{activeChat ? `+${activeChat.phoneNumbers[0]}` : 'Telegram'}</h2>
+                    <h2>{activeChat ? chatTitle(activeChat) : 'Telegram'}</h2>
                     <button type="button" onClick={onExit}>
                         Выйти
                     </button>
                 </header>
+                {(receiving.status !== 'running' || blocked) && (
+                    <div className={styles.notice} role="status">
+                        <p>
+                            {blocked
+                                ? 'Проверьте учётные данные. Нажмите «Выйти» и подключитесь заново.'
+                                : receiving.status === 'retrying'
+                                  ? 'Нет связи с очередью сообщений. Повторная попытка…'
+                                  : receiving.reason}
+                        </p>
+                        {receiving.status === 'stopped' && !blocked && (
+                            <button type="button" onClick={receiving.retry}>
+                                Повторить получение
+                            </button>
+                        )}
+                    </div>
+                )}
                 {activeChat ? (
                     <>
                         <MessageList key={activeChat.chatId} messages={activeChat.messages} />

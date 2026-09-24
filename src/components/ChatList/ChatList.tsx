@@ -1,3 +1,4 @@
+import { chatTitle } from '../../model/chatReducer';
 import type { Chat } from '../../model/chatReducer';
 import styles from './ChatList.module.css';
 
@@ -23,7 +24,7 @@ export function ChatList({ chats, activeChatId, onSelect }: Props) {
                         aria-pressed={chat.chatId === activeChatId}
                         onClick={() => onSelect(chat.chatId)}
                     >
-                        <span>+{chat.phoneNumbers[0]}</span>
+                        <span>{chatTitle(chat)}</span>
                         <small>{chat.messages[chat.messages.length - 1]?.text ?? 'Нет сообщений'}</small>
                     </button>
                 </li>
